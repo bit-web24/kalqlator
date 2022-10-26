@@ -39,7 +39,26 @@ pub fn syn_check(exp: &String) -> Result<String, kalqlator::Error> {
             });
         }
     }
-
+    // checking for multiple operators in a row
+    let char_vec: Vec<char> = exp.trim().chars().collect();
+    for x in 0..char_vec.len() as u32 {
+        if [37, 42, 43, 45, 47]
+            .iter()
+            .find(|&&y| y == char_vec[x as usize] as u32)
+            == Some(&(char_vec[x as usize] as u32))
+        {
+            if [37, 42, 43, 45, 47]
+                .iter()
+                .find(|&&y| y == *char_vec.get((x + 1) as usize).unwrap() as u32)
+                == Some(&(char_vec[x as usize] as u32))
+            {
+                return Err(kalqlator::Error {
+                    typ: kalqlator::ErrorType::MultipleOperators,
+                    at_char: x,
+                });
+            }
+        }
+    }
     Ok(exp.to_string())
 }
 

@@ -2,6 +2,7 @@
 pub enum ErrorType {
     CharNotDefined,
     UnusedOperator,
+    MultipleOperators,
 }
 
 pub enum ExpressionType {
