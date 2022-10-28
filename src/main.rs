@@ -1,4 +1,4 @@
-use process::syn_check; // eval, parse};
+use process::{syn_check, parse};
 use std::io;
 mod kalqlator;
 mod process;
@@ -20,7 +20,7 @@ fn main() -> Result<(), io::Error> {
 }
 fn kalqlate(exp: String) -> Result<kalqlator::MetaData, kalqlator::Error> {
     let chkd_exp: String = syn_check(&exp)?;
-    //let prsd_struct: (Vec<i32>, Vec<char>) = parse(chkd_exp)?;
+    let prsd_struct: (/*operators*/Vec<u32>, /*operands*/Vec<u32>) = parse(&chkd_exp)?;
     let result: i32 = 20; //eval(prsd_struct)?;
     Ok(kalqlator::MetaData {
         exp,

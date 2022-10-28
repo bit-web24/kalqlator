@@ -1,4 +1,5 @@
-use crate::kalqlator;
+use crate::kalqlator::{self, ErrorType};
+use std::num::IntErrorKind;
 
 pub fn syn_check(exp: &String) -> Result<String, kalqlator::Error> {
     // checking for valid numbers & arithmatic operators
@@ -21,10 +22,10 @@ pub fn syn_check(exp: &String) -> Result<String, kalqlator::Error> {
     }
 
     // checking for first and last char in expression
-    let f_chars = [37, 42, 43, 47];
-    let e_chars = [37, 42, 43, 45, 47];
-    let f_ctoi = exp.trim().chars().next().unwrap() as u32;
-    let l_ctoi = exp.trim().chars().last().unwrap() as u32;
+    let f_chars:[u32;4] = [37, 42, 43, 47];
+    let e_chars:[u32;5] = [37, 42, 43, 45, 47];
+    let f_ctoi:u32 = exp.trim().chars().next().unwrap() as u32;
+    let l_ctoi:u32 = exp.trim().chars().last().unwrap() as u32;
 
     if f_chars.iter().find(|&&x| x == f_ctoi) == Some(&f_ctoi) {
         return Err(kalqlator::Error {
@@ -62,6 +63,40 @@ pub fn syn_check(exp: &String) -> Result<String, kalqlator::Error> {
     Ok(exp.to_string())
 }
 
-//pub fn parse(exp: String) -> Result<(Vec<i32>, Vec<char>), kalqlator::Error> {}
+pub fn parse(exp: &String) -> Result<(/*operators*/Vec<u32>, /*operands*/Vec<u32>), kalqlator::Error> {
+    // separating operators and operands
+    let mut operands:Vec<u32> = Vec::new();
+    let mut operators:Vec<u32> = Vec::new();
+    const OPERATORS:[u32;6] = [10, 37, 42, 43, 45, 47];
 
-//pub fn eval(prsd_struct: (Vec<i32>, Vec<char>)) -> Result<i32, kalqlator::Error> {}
+    let mut xoperand:String = String::new();
+    for x in exp.chars() {
+        if OPERATORS.iter().find(|&&i| i==x as u32) == Some(&(x as u32)) {
+            match xoperand.parse::<u32>() {
+                Err(xx) => return Err(kalqlator::Error {
+                    typ: {
+                        match *xx.kind() {
+                            IntErrorKind::Empty => ErrorType::Empty,
+                            IntErrorKind::InvalidDigit => ErrorType::InvalidDigit,
+                            IntErrorKind::PosOverflow => ErrorType::PosOverflow,
+                            IntErrorKind::NegOverflow => ErrorType::NegOverflow,
+                            IntErrorKind::Zero => ErrorType::Zero,
+                            _ => ErrorType::UnknownError,
+                        }
+                    },
+                    at_char: 0,
+                }),
+                Ok(xx) => operands.push(xx),
+            }
+            xoperand.clear();
+            if !(x as u32 == 10) {
+                operators.push(x as u32);
+            }
+        } else {
+            xoperand.push(x);
+        }
+    }
+    Ok((operators,operands))
+}
+
+//pub fn eval(prsd_stru:ct: (Vec<i32>, Vec<char>)) -> Result<i32, kalqlator::Error> {}

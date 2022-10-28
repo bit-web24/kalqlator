@@ -3,6 +3,12 @@ pub enum ErrorType {
     CharNotDefined,
     UnusedOperator,
     MultipleOperators,
+    Empty,
+    InvalidDigit,
+    PosOverflow,
+    NegOverflow,
+    Zero,
+    UnknownError,
 }
 
 pub enum ExpressionType {
@@ -21,6 +27,7 @@ pub struct MetaData {
     pub result: i32,
 }
 
+#[derive(Debug)]
 pub struct Error {
     //exp: String,
     //term_len: u32,
@@ -31,7 +38,7 @@ pub struct Error {
 
 impl Error {
     pub fn error(self) -> String {
-        String::from("something is wrong!")
+        format!("Error:\n    at: {}\n    type: {:?}", self.at_char, self.typ)
         /*      let err_msg: String = String::new();
         err_msg.push_str(&format!(
             "error[{}:{}]: {:#?}\n",
