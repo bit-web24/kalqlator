@@ -1,8 +1,7 @@
 #[derive(Debug)]
 pub enum ErrorType {
     CharNotDefined,
-    UnusedOperator,
-    MultipleOperators,
+    OperandMissing,
     Empty,
     InvalidDigit,
     PosOverflow,
