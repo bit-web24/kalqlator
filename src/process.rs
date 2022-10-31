@@ -42,17 +42,15 @@ pub fn syn_check(exp: &String) -> Result<String, kalqlator::Error> {
     }
     // checking for missing operands
     let char_vec: Vec<char> = exp.trim().chars().collect();
-    for x in 0..char_vec.len() as u32 {
-        if [37, 42, 43, 45, 47]
-            .iter()
-            .find(|&&y| y == char_vec[x as usize] as u32)
-            == [37, 42, 43, 45, 47]
-                .iter()
-                .find(|&&y| y == *char_vec.get((x + 1) as usize).unwrap() as u32)
+    let tmp = vec![37, 42, 43, 45, 47];
+
+    for x in 0..(char_vec.len() - 1) {
+        if tmp.iter().find(|&&y| y == char_vec[x] as u32) == Some(&(char_vec[x] as u32))
+            && tmp.iter().find(|&&y| y == char_vec[x + 1] as u32) == Some(&(char_vec[x + 1] as u32))
         {
             return Err(kalqlator::Error {
                 typ: kalqlator::ErrorType::OperandMissing,
-                at_char: x,
+                at_char: (x as u32) + 1,
             });
         }
     }
@@ -97,7 +95,7 @@ fn chk_psh_trm_vlu(xoperand: &String, operands: &mut Vec<u32>) -> Result<(), kal
                         _ => ErrorType::UnknownError,
                     }
                 },
-                at_char: 0,
+                at_char: 609,
             })
         }
         Ok(xx) => operands.push(xx),

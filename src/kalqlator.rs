@@ -10,6 +10,7 @@ pub enum ErrorType {
     UnknownError,
 }
 
+#[allow(unused)]
 pub enum ExpressionType {
     Infix,
     Prefix,
