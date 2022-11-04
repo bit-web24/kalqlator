@@ -69,7 +69,9 @@ pub fn parse(
     let mut xoperand: String = String::new();
     for x in exp.trim().chars() {
         if OPERATORS.iter().find(|&&i| i == x as u32) == Some(&(x as u32)) {
-            chk_psh_trm_vlu(&xoperand, &mut operands)?;
+            if !xoperand.is_empty() {
+                chk_psh_trm_vlu(&xoperand, &mut operands)?;
+            }
             xoperand.clear();
             operators.push(x as u32);
         } else {
@@ -103,4 +105,14 @@ fn chk_psh_trm_vlu(xoperand: &String, operands: &mut Vec<u32>) -> Result<(), kal
     Ok(())
 }
 
-//pub fn eval(prsd_stru:ct: (Vec<i32>, Vec<char>)) -> Result<i32, kalqlator::Error> {}
+pub fn eval(prsd_stru: (Vec<u32>, Vec<u32>)) -> Result<i32, kalqlator::Error> {
+    let (mut operators, operands) = prsd_stru;
+    let mut operands: Vec<i32> = operands.iter().map(|&x| x as i32).collect();
+
+    if operators.len() == operands.len() {
+        operands[0] = 0 - operands[0];
+        operators.remove(0);
+    }
+
+    Ok(243)
+}

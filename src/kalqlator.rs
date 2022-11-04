@@ -10,30 +10,16 @@ pub enum ErrorType {
     UnknownError,
 }
 
-#[allow(unused)]
-pub enum ExpressionType {
-    Infix,
-    Prefix,
-    Postfix,
-}
-
 pub struct MetaData {
     pub exp: String,
-    pub exp_type: ExpressionType,
     pub terms: u32,
-    //pub terms_level1: u32,
-    //pub terms_level2: u32,
-    //pub terms_level3: u32,
     pub result: i32,
 }
 
 #[derive(Debug)]
 pub struct Error {
-    //exp: String,
-    //term_len: u32,
     pub at_char: u32, // with respect to the expression
     pub typ: ErrorType,
-    //at_term: u32,
 }
 
 impl Error {
