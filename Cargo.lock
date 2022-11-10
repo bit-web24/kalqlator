@@ -3,5 +3,14 @@
 version = 3
 
 [[package]]
+name = "g_calc"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3b945263c4b72c97710c7f59677615bda7d829632d9770a98986096ae642644b"
+
+[[package]]
 name = "kalqlator"
 version = "0.1.0"
+dependencies = [
+ "g_calc",
+]

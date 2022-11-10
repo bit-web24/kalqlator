@@ -105,7 +105,7 @@ fn chk_psh_trm_vlu(xoperand: &String, operands: &mut Vec<u32>) -> Result<(), kal
     Ok(())
 }
 
-pub fn eval(prsd_stru: (Vec<u32>, Vec<u32>)) -> Result<i32, kalqlator::Error> {
+pub fn eval(exp:&String, prsd_stru: (Vec<u32>, Vec<u32>)) -> Result<i32, kalqlator::Error> {
     let (mut operators, operands) = prsd_stru;
     let mut operands: Vec<i32> = operands.iter().map(|&x| x as i32).collect();
 
@@ -114,5 +114,7 @@ pub fn eval(prsd_stru: (Vec<u32>, Vec<u32>)) -> Result<i32, kalqlator::Error> {
         operators.remove(0);
     }
 
-    Ok(243)
+    use g_calc::{convert, solve};
+
+    Ok(solve(&convert(exp).unwrap()).unwrap() as i32)
 }

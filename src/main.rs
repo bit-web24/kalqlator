@@ -22,7 +22,7 @@ fn kalqlate(exp: String) -> Result<kalqlator::MetaData, kalqlator::Error> {
     let chkd_exp: String = syn_check(&exp)?;
     #[allow(unused)]
     let prsd_struct: (/*operators*/ Vec<u32>, /*operands*/ Vec<u32>) = parse(&chkd_exp)?;
-    let result: i32 = eval(prsd_struct)?;
+    let result: i32 = eval(&exp, prsd_struct)?;
     Ok(kalqlator::MetaData {
         exp,
         terms: 5,
