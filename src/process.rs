@@ -164,5 +164,12 @@ pub fn eval(prsd_stru: (Vec<u32>, Vec<u32>)) -> Result<(i32, u32), kalqlator::Er
         }
     }
 
-    Ok((operands[0], terms))
+    if operands.is_empty() {
+        Err(kalqlator::Error{
+            at_char: 0,
+            typ: ErrorType::Empty,
+        })
+    } else {
+        Ok((operands[0], terms))
+    }
 }

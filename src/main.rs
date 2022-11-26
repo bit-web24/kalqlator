@@ -10,7 +10,7 @@ fn main() -> Result<(), io::Error> {
     if !(input.trim().len() < 1) {
         match kalqlate(input) {
             Ok(metadata) => println!("\n{:#?}", metadata),
-            Err(error) => eprintln!("{}", error.error()),
+            Err(error) => eprintln!("\n{:#?}", error),
         }
     } else {
         eprintln!("Error: no input");
