@@ -105,7 +105,7 @@ fn chk_psh_trm_vlu(xoperand: &String, operands: &mut Vec<u32>) -> Result<(), kal
     Ok(())
 }
 
-pub fn eval(prsd_stru: (Vec<u32>, Vec<u32>)) -> Result<i32, kalqlator::Error> {
+pub fn eval(prsd_stru: (Vec<u32>, Vec<u32>)) -> Result<(i32, u32), kalqlator::Error> {
     let (mut operators, operands) = prsd_stru;
     let mut operands: Vec<i32> = operands.iter().map(|&x| x as i32).collect();
 
@@ -114,6 +114,9 @@ pub fn eval(prsd_stru: (Vec<u32>, Vec<u32>)) -> Result<i32, kalqlator::Error> {
         operators.remove(0);
     }
 
+    let terms:u32 = operands.len() as u32;
+
+    #[allow(unused)]
     for o in 0..operators.iter().filter(|&n| *n == '/' as u32).count() {
         for x in 0..operators.len() {
             if operators[x] == '/' as u32 {
@@ -125,6 +128,7 @@ pub fn eval(prsd_stru: (Vec<u32>, Vec<u32>)) -> Result<i32, kalqlator::Error> {
         }
     }
 
+    #[allow(unused)]
     for o in 0..operators.iter().filter(|&n| *n == '*' as u32).count() {
         for x in 0..operators.len() {
             if operators[x] == '*' as u32 {
@@ -136,6 +140,7 @@ pub fn eval(prsd_stru: (Vec<u32>, Vec<u32>)) -> Result<i32, kalqlator::Error> {
         }
     }
 
+    #[allow(unused)]
     for o in 0..operators.iter().filter(|&n| *n == '+' as u32).count() {
         for x in 0..operators.len() {
             if operators[x] == '+' as u32 {
@@ -147,6 +152,7 @@ pub fn eval(prsd_stru: (Vec<u32>, Vec<u32>)) -> Result<i32, kalqlator::Error> {
         }
     }
 
+    #[allow(unused)]
      for o in 0..operators.iter().filter(|&n| *n == '-' as u32).count() {
         for x in 0..operators.len() {
             if operators[x] == '-' as u32 {
@@ -158,7 +164,5 @@ pub fn eval(prsd_stru: (Vec<u32>, Vec<u32>)) -> Result<i32, kalqlator::Error> {
         }
     }
 
-    println!("{:?}", operands);
-    
-    Ok(operands[0])
+    Ok((operands[0], terms))
 }

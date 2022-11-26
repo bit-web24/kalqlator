@@ -9,7 +9,7 @@ pub enum ErrorType {
     Zero,
     UnknownError,
 }
-
+#[derive(Debug)]
 pub struct MetaData {
     pub exp: String,
     pub terms: u32,

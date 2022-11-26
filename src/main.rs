@@ -9,7 +9,7 @@ fn main() -> Result<(), io::Error> {
 
     if !(input.trim().len() < 1) {
         match kalqlate(input) {
-            Ok(metadata) => println!("{} = {}", metadata.exp.trim(), metadata.result),
+            Ok(metadata) => println!("\n{:#?}", metadata),
             Err(error) => eprintln!("{}", error.error()),
         }
     } else {
@@ -22,10 +22,10 @@ fn kalqlate(exp: String) -> Result<kalqlator::MetaData, kalqlator::Error> {
     let chkd_exp: String = syn_check(&exp)?;
     #[allow(unused)]
     let prsd_struct: (/*operators*/ Vec<u32>, /*operands*/ Vec<u32>) = parse(&chkd_exp)?;
-    let result: i32 = eval(prsd_struct)?;
+    let (result, terms) = eval(prsd_struct)?;
     Ok(kalqlator::MetaData {
-        exp,
-        terms: 5,
+        exp: exp.trim().to_string(),
+        terms,
         result,
     })
 }
