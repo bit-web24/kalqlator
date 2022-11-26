@@ -105,7 +105,7 @@ fn chk_psh_trm_vlu(xoperand: &String, operands: &mut Vec<u32>) -> Result<(), kal
     Ok(())
 }
 
-pub fn eval(exp:&String, prsd_stru: (Vec<u32>, Vec<u32>)) -> Result<i32, kalqlator::Error> {
+pub fn eval(prsd_stru: (Vec<u32>, Vec<u32>)) -> Result<i32, kalqlator::Error> {
     let (mut operators, operands) = prsd_stru;
     let mut operands: Vec<i32> = operands.iter().map(|&x| x as i32).collect();
 
@@ -114,7 +114,51 @@ pub fn eval(exp:&String, prsd_stru: (Vec<u32>, Vec<u32>)) -> Result<i32, kalqlat
         operators.remove(0);
     }
 
-    use g_calc::{convert, solve};
+    for o in 0..operators.iter().filter(|&n| *n == '/' as u32).count() {
+        for x in 0..operators.len() {
+            if operators[x] == '/' as u32 {
+                operands[x] = operands[x] / operands[x + 1];
+                operators.remove(x);
+                operands.remove(x + 1);
+                break;
+            }
+        }
+    }
 
-    Ok(solve(&convert(exp).unwrap()).unwrap() as i32)
+    for o in 0..operators.iter().filter(|&n| *n == '*' as u32).count() {
+        for x in 0..operators.len() {
+            if operators[x] == '*' as u32 {
+                operands[x] = operands[x] * operands[x + 1];
+                operators.remove(x);
+                operands.remove(x + 1);
+                break;
+            }
+        }
+    }
+
+    for o in 0..operators.iter().filter(|&n| *n == '+' as u32).count() {
+        for x in 0..operators.len() {
+            if operators[x] == '+' as u32 {
+                operands[x] = operands[x] + operands[x + 1];
+                operators.remove(x);
+                operands.remove(x + 1);
+                break;
+            }
+        }
+    }
+
+     for o in 0..operators.iter().filter(|&n| *n == '-' as u32).count() {
+        for x in 0..operators.len() {
+            if operators[x] == '-' as u32 {
+                operands[x] = operands[x] - operands[x + 1];
+                operators.remove(x);
+                operands.remove(x + 1);
+                break;
+            }
+        }
+    }
+
+    println!("{:?}", operands);
+    
+    Ok(operands[0])
 }
